@@ -17,7 +17,7 @@ class DatabaseMananger:
         try:
             self.__cursor.execute(query)
             return self.__cursor.fetchmany(limit) if limit else self.__cursor.fetchall()
-        except Exception as error:
+        except (Exception, psycopg2.DatabaseError) as error:
             print(str(error))
             return False
 
@@ -25,7 +25,7 @@ class DatabaseMananger:
         try:
             self.__cursor.execute(query)
             return self.__cursor.fetchone()
-        except Exception as error:
+        except (Exception, psycopg2.DatabaseError) as error:
             print(str(error))
             return False
 
@@ -34,7 +34,7 @@ class DatabaseMananger:
             if returning: query = f"{query} RETURNING *"
             self.__query(query, values)
             return self.__cursor.fetchone() if returning else True
-        except Exception as error:
+        except (Exception, psycopg2.DatabaseError) as error:
             print(str(error))
             return False
 
@@ -42,7 +42,7 @@ class DatabaseMananger:
         try:
             self.__query(query, values)
             return True
-        except Exception as error:
+        except (Exception, psycopg2.DatabaseError) as error:
             print(str(error))
             return False
 
@@ -50,7 +50,7 @@ class DatabaseMananger:
         try:
             self.__query(query, values)
             return True
-        except Exception as error:
+        except (Exception, psycopg2.DatabaseError) as error:
             print(str(error))
             return False
 
