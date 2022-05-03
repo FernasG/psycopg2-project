@@ -32,12 +32,32 @@ class DatabaseMananger:
     def insert(self, query: str, values: Union[tuple, list], returning: bool = True) -> tuple:
         try:
             if returning: query = f"{query} RETURNING *"
-            self.__cursor.execute(query, values)
-            self.__connection.commit()
+            self.__query(query, values)
             return self.__cursor.fetchone() if returning else True
         except Exception as error:
             print(str(error))
             return False
+
+    def update(self, query: str, values: Union[tuple, list]):
+        try:
+            self.__query(query, values)
+            return True
+        except Exception as error:
+            print(str(error))
+            return False
+
+    def delete(self, query: str, values: Union[tuple, list]):
+        try:
+            self.__query(query, values)
+            return True
+        except Exception as error:
+            print(str(error))
+            return False
+
+    def __query(self, query: str, values: Union[tuple, list]):
+        self.__cursor.execute(query, values)
+        self.__connection.commit()
+        return True
 
     def close(self) -> None:
         self.__cursor.close()
