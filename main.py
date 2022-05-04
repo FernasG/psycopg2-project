@@ -1,15 +1,28 @@
 from database import DatabaseMananger
-from datetime import datetime
+from dotenv import load_dotenv
+from decimal import Decimal
 
 if __name__ == "__main__":
+    load_dotenv()
+
     manager = DatabaseMananger()
+    # result = manager.insert("northwind.products", {
+    #     "productid": 101,
+    #     "productname": "Teste", 
+    #     "supplierid": 12, 
+    #     "categoryid": 4, 
+    #     "quantityperunit": 12,
+    #     "unitprice": Decimal(10),
+    #     "unitsinstock": 50,
+    #     "unitsonorder": 0,
+    #     "reorderlevel": 100,
+    #     "discontinued": "N"
+    # })
+    # print(result)
 
-    migrations = manager.find("SELECT * FROM public.migrations")
-    for migration in migrations:
-        _, timestamp, name = migration
-        timestamp = datetime.fromtimestamp(timestamp / 1e3).strftime("%d/%m/%Y %H:%M")
-
-        print(f"{name} - {timestamp}")
+    products = manager.find("northwind.products", { "productid": 1 })
+    product = manager.findOne("northwind.products", { "productid": 101 })
+    print(product)
 
     manager.close()
 
